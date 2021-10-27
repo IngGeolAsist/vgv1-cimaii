@@ -2,6 +2,26 @@
 <html>
 
 <head>
+
+  <!-- Código Cima II-->
+<meta charset="utf-8">
+	<title>Mapa E14C17_2</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+	<script type="text/javascript" src="litologias.js"></script>
+	<script type="text/javascript" src="sitios.js"></script>
+	<script type="text/javascript" src="trayectos.js"></script>
+	<script type="text/javascript" src="logo_rojo.png"></script>
+	<script type="text/javascript" src="logo_verde.png"></script>
+
+	
+	
+  <!-- Código Storymaps-->
+	
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
   <link rel="icon" type="image/png" href="./favicon.png">
@@ -54,13 +74,118 @@
 
   <script type="text/javascript">
     // Create the Leaflet map with a generic start point
+	// Basemap
     var map = L.map('map', {
-      center: [0, 0],
-      zoom: 1,
-      scrollWheelZoom: false,
-      zoomControl: false,
-      tap: false
-    });
+		center:[19.1108344, -99.1007876],
+		zoom:11
+		});
+
+		var scale = L.control.scale({
+		'imperial':false
+		});
+
+		scale.addTo(map);
+		
+		var osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		{attribution: 'Map Data &copy; OpenStreetMap contributors'
+		});
+		osm.addTo(map);
+	
+		var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+		maxZoom: 17,
+		attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+		}); 
+		topo.addTo(map);
+	
+		var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+		});
+
+		var basemaps = {
+			"OpenStreetMap": osm,
+			"Topografía": topo,										
+			"Satélite": sat
+			};
+		L.control.layers(basemaps).addTo(map);
+		
+			  	//Geología
+	 	var litologias = L.geoJson(litologias, {
+		style:function(feature){
+		switch (feature.properties.Nombre){
+			case 'Flujos de Lava de El Pelado': return {color:'#fff714', "weight": 0, fillOpacity: .5};
+			case 'Flujos de lava de Chichinautzin': return {color:'#9fd4d3', "weight": 0, fillOpacity: .5};			
+			case 'Flujos de lava de Guespala': return {color:'#f5b3dd', "weight": 0, fillOpacity: .5};
+			case 'Formación Tepoztlán': return {color:'#996202', "weight": 0, fillOpacity: .5};
+			case 'Formación Morelos': return {color:'#049902', "weight": 0, fillOpacity: .5};
+		}
+		},
+		onEachFeature: function( feature, layer ){
+      		layer.bindPopup( "<strong>" + "Litología:" + "</strong><br/>"+ feature.properties.Nombre)
+   		}
+		}).addTo(map);
+		
+	 	//Trayectos
+	 	var trayectos = L.geoJson(trayectos, {
+		style:function(feature){
+		switch (feature.properties.Name){
+			case 'Track 1 CU - La Cima': return {color:'#ff0303'};
+			case 'Track 2 La Cima - San Andrés de la Cal': return {color:'#ff0303'};			
+			case 'Track 3 Tepoztlán': return {color:'#ff0303'};
+			case 'Track 4 Tepoztlán - La Cañada': return {color:'#ff0303'};
+			case 'Track 5 Caminata': return {color:'#ff0303'};
+			case 'Track 6 El Sombrero (Tlayacapan)': return {color:'#ff03031'}; 
+			case 'Track 7 Tlayacapan - Laureles': return {color:'#ff0303'};			
+		}
+		},
+		onEachFeature: function( feature, layer ){
+      		layer.bindPopup( "<strong>" + "Track:" + "</strong><br/>"+ feature.properties.Name)
+   		}
+		}).addTo(map);
+
+	 	//Estaciones
+	 	var sitios = L.geoJson(sitios, {
+		style:function(feature){
+		switch (feature.properties.select){
+			case 'Inicio': return {color:'#ff0303'};
+			case 'La Cima II': return {color:'#996202'};
+			case 'San Andrés de la Cal': return {color:'#ff0303'};
+			case 'Tepozteco': return {color:'#996202'};
+			case 'La Cañada 1': return {color:'#ff0303'};
+			case 'La Cañada 2': return {color:'#996202'};
+			case 'Cerro del Sombrero': return {color:'#ff0303'};
+			case 'Banco de materiales': return {color:'#996202'};
+		}
+		},
+		onEachFeature: function( feature, layer ){
+      		layer.bindPopup( "<strong>" + "Estación:" + "</strong><br/>"+ feature.properties.Name)
+   		}
+		}).addTo(map);
+		
+		
+			 	//sketchfab
+		var skf = [
+    		[19.113425, -99.195205]
+		];
+
+		var arregloDeMarcadores =[];
+
+	 	var skfIcon = L.icon({
+    			iconUrl: 'Icon/sketchfab.png',
+    			iconSize: [25, 25],
+    			iconAnchor: [25, 25],
+    			popupAnchor: [-3, -76],
+		});
+
+		for (var i=0; i < skf.length; i++) {
+  		  arregloDeMarcadores[i] = new L.marker(skf[i], {icon: skfIcon}).addTo(map);
+		}
+
+		var popupskf = L.popup({
+  			minWidth: 250
+		}).setContent('<div class="sketchfab-embed-wrapper"> <iframe title="Bomba Cima II" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="fullscreen; autoplay; vr" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/470e924af9e44f54a1f0dafb14a7ca91/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/bomba-cima-ii-470e924af9e44f54a1f0dafb14a7ca91?utm_medium=embed&utm_campaign=share-popup&utm_content=470e924af9e44f54a1f0dafb14a7ca91" target="_blank" style="font-weight: bold; color: #1CAAD9;"> Bomba Cima II </a> by <a href="https://sketchfab.com/IngenieriaGeologicaAsistida?utm_medium=embed&utm_campaign=share-popup&utm_content=470e924af9e44f54a1f0dafb14a7ca91" target="_blank" style="font-weight: bold; color: #1CAAD9;"> Ingeniería Geológica Asistida </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=470e924af9e44f54a1f0dafb14a7ca91" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>')
+
+		arregloDeMarcadores[0].bindPopup(popupskf);
+
   </script>
 
   <script type="text/javascript" src="google-doc-url.js"></script>
