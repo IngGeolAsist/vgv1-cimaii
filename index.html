@@ -94,7 +94,7 @@
 	  	
 	  	
 	  	var ggl = new L.Google(HYBRID);
-	  	map.addLayer(ggl);
+	  	ggl.addLayer(map);
 		
 		var osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
 		{attribution: 'Map Data &copy; OpenStreetMap contributors'
