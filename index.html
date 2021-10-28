@@ -129,13 +129,7 @@
 	 	var trayectos = L.geoJson(trayectos, {
 		style:function(feature){
 		switch (feature.properties.Name){
-			case 'Track 1 CU - La Cima': return {color:'#ff0303'};
-			case 'Track 2 La Cima - San Andrés de la Cal': return {color:'#ff0303'};			
-			case 'Track 3 Tepoztlán': return {color:'#ff0303'};
-			case 'Track 4 Tepoztlán - La Cañada': return {color:'#ff0303'};
-			case 'Track 5 Caminata': return {color:'#ff0303'};
-			case 'Track 6 El Sombrero (Tlayacapan)': return {color:'#ff03031'}; 
-			case 'Track 7 Tlayacapan - Laureles': return {color:'#ff0303'};			
+			case 'Track 1 CU - La Cima': return {color:'#ff0303'}
 		}
 		},
 		onEachFeature: function( feature, layer ){
