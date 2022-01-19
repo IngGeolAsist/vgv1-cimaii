@@ -126,7 +126,7 @@
 		}
 		},
 		onEachFeature: function( feature, layer ){
-      		layer.bindPopup( "<strong>" + "Litología:" + "</strong><br/>"+ feature.properties.Nombre)
+      		layer.bindPopup( feature.properties.Nombre)
    		}
 		}).addTo(map);
 		
