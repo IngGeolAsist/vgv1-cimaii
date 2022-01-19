@@ -90,19 +90,20 @@
 		});
 
 		scale.addTo(map);
-		
-		var osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-		{attribution: 'Map Data &copy; OpenStreetMap contributors'
-		});
-		osm.addTo(map);
 
 		var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
     		maxZoom: 20,
     		subdomains:['mt0','mt1','mt2','mt3']
 		});
 
+	  	var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+		subdomains: 'abcd',
+		maxZoom: 20
+		});
+
 		var basemaps = {
-			"OpenStreetMap": osm,
+			"CartoDB Positron": CartoDB_Positron,
 			"Google Hybrid": googleHybrid,									
 			};
 		L.control.layers(basemaps).addTo(map);
