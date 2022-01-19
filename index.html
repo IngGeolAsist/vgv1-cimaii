@@ -101,10 +101,16 @@
 		subdomains: 'abcd',
 		maxZoom: 20
 		});
+	  
+	  	var HikeBike_HillShading = L.tileLayer('https://tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png', {
+		maxZoom: 15,
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
 
 		var basemaps = {
 			"CartoDB Positron": CartoDB_Positron,
-			"Google Hybrid": googleHybrid,									
+			"Google Hybrid": googleHybrid,
+			"HikeBike Hillshade": HikeBike_HillShading,
 			};
 		L.control.layers(basemaps).addTo(map);
 		
